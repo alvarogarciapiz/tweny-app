@@ -37,7 +37,27 @@ class TimerManager: ObservableObject {
     private var currentActivity: Activity<TwenyAttributes>?
     
     init() {
-        // Load configuration from UserDefaults if needed
+        // Register defaults
+        UserDefaults.standard.register(defaults: [
+            "dailyGoalHours": 4.0,
+            "workDuration": 20.0,
+            "breakDuration": 20.0,
+            "isSoundEnabled": true,
+            "isHapticsEnabled": true
+        ])
+        
+        // Load configuration
+        let goalHours = UserDefaults.standard.double(forKey: "dailyGoalHours")
+        sessionGoal = goalHours * 3600
+        
+        let workMinutes = UserDefaults.standard.double(forKey: "workDuration")
+        configuration.workDuration = workMinutes * 60
+        
+        let breakSeconds = UserDefaults.standard.double(forKey: "breakDuration")
+        configuration.breakDuration = breakSeconds
+        
+        configuration.isSoundEnabled = UserDefaults.standard.bool(forKey: "isSoundEnabled")
+        configuration.isHapticsEnabled = UserDefaults.standard.bool(forKey: "isHapticsEnabled")
     }
     
     func startSession(with preset: SessionPreset? = nil) {
