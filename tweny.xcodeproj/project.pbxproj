@@ -6,14 +6,75 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		384C13B42EDB505400C1D899 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384C13B32EDB505400C1D899 /* WidgetKit.framework */; };
+		384C13B62EDB505400C1D899 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384C13B52EDB505400C1D899 /* SwiftUI.framework */; };
+		384C13C72EDB505500C1D899 /* TwenyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		384C13C52EDB505500C1D899 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 384C136D2EDB495400C1D899 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 384C13B02EDB505400C1D899;
+			remoteInfo = TwenyWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		384C13CC2EDB505500C1D899 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				384C13C72EDB505500C1D899 /* TwenyWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		384C13752EDB495400C1D899 /* tweny.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tweny.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TwenyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		384C13B32EDB505400C1D899 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		384C13B52EDB505400C1D899 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		384C13C82EDB505500C1D899 /* Exceptions for "TwenyWidget" folder in "TwenyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 384C13B02EDB505400C1D899 /* TwenyWidgetExtension */;
+		};
+		384C13CE2EDB506300C1D899 /* Exceptions for "tweny" folder in "TwenyWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/TwenyAttributes.swift,
+			);
+			target = 384C13B02EDB505400C1D899 /* TwenyWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		384C13772EDB495400C1D899 /* tweny */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				384C13CE2EDB506300C1D899 /* Exceptions for "tweny" folder in "TwenyWidgetExtension" target */,
+			);
 			path = tweny;
+			sourceTree = "<group>";
+		};
+		384C13B72EDB505400C1D899 /* TwenyWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				384C13C82EDB505500C1D899 /* Exceptions for "TwenyWidget" folder in "TwenyWidgetExtension" target */,
+			);
+			path = TwenyWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -26,6 +87,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		384C13AE2EDB505400C1D899 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				384C13B62EDB505400C1D899 /* SwiftUI.framework in Frameworks */,
+				384C13B42EDB505400C1D899 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -33,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				384C13772EDB495400C1D899 /* tweny */,
+				384C13B72EDB505400C1D899 /* TwenyWidget */,
+				384C13B22EDB505400C1D899 /* Frameworks */,
 				384C13762EDB495400C1D899 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,8 +113,18 @@
 			isa = PBXGroup;
 			children = (
 				384C13752EDB495400C1D899 /* tweny.app */,
+				384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		384C13B22EDB505400C1D899 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				384C13B32EDB505400C1D899 /* WidgetKit.framework */,
+				384C13B52EDB505400C1D899 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -55,10 +137,12 @@
 				384C13712EDB495400C1D899 /* Sources */,
 				384C13722EDB495400C1D899 /* Frameworks */,
 				384C13732EDB495400C1D899 /* Resources */,
+				384C13CC2EDB505500C1D899 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				384C13C62EDB505500C1D899 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				384C13772EDB495400C1D899 /* tweny */,
@@ -69,6 +153,28 @@
 			productName = tweny;
 			productReference = 384C13752EDB495400C1D899 /* tweny.app */;
 			productType = "com.apple.product-type.application";
+		};
+		384C13B02EDB505400C1D899 /* TwenyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 384C13C92EDB505500C1D899 /* Build configuration list for PBXNativeTarget "TwenyWidgetExtension" */;
+			buildPhases = (
+				384C13AD2EDB505400C1D899 /* Sources */,
+				384C13AE2EDB505400C1D899 /* Frameworks */,
+				384C13AF2EDB505400C1D899 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				384C13B72EDB505400C1D899 /* TwenyWidget */,
+			);
+			name = TwenyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TwenyWidgetExtension;
+			productReference = 384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -81,6 +187,9 @@
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					384C13742EDB495400C1D899 = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+					384C13B02EDB505400C1D899 = {
 						CreatedOnToolsVersion = 26.1.1;
 					};
 				};
@@ -100,12 +209,20 @@
 			projectRoot = "";
 			targets = (
 				384C13742EDB495400C1D899 /* tweny */,
+				384C13B02EDB505400C1D899 /* TwenyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		384C13732EDB495400C1D899 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		384C13AF2EDB505400C1D899 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -122,7 +239,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		384C13AD2EDB505400C1D899 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		384C13C62EDB505500C1D899 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 384C13B02EDB505400C1D899 /* TwenyWidgetExtension */;
+			targetProxy = 384C13C52EDB505500C1D899 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		384C13832EDB495500C1D899 /* Debug */ = {
@@ -254,6 +386,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -298,6 +431,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -329,6 +463,71 @@
 			};
 			name = Release;
 		};
+		384C13CA2EDB505500C1D899 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XYNDU2W8XF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TwenyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TwenyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny.TwenyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		384C13CB2EDB505500C1D899 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XYNDU2W8XF;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TwenyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TwenyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny.TwenyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -346,6 +545,15 @@
 			buildConfigurations = (
 				384C13862EDB495500C1D899 /* Debug */,
 				384C13872EDB495500C1D899 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		384C13C92EDB505500C1D899 /* Build configuration list for PBXNativeTarget "TwenyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				384C13CA2EDB505500C1D899 /* Debug */,
+				384C13CB2EDB505500C1D899 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
