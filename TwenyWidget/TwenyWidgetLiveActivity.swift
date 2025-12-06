@@ -12,8 +12,8 @@ import SwiftUI
 struct TwenyWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TwenyAttributes.self) { context in
-            // Lock screen/banner UI
-            LiveActivityView(context: context)
+            // Lock screen/banner UI - uses activityFamily to differentiate
+            ActivityContentView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
                 // Expanded UI - Apple Flight style
@@ -144,6 +144,7 @@ struct TwenyWidgetLiveActivity: Widget {
             }
             .widgetURL(URL(string: "tweny://open"))
         }
+        .supplementalActivityFamilies([.small]) // Smart Stack on Apple Watch
     }
     
     func phaseColor(_ phase: String) -> Color {
@@ -156,6 +157,80 @@ struct TwenyWidgetLiveActivity: Widget {
         return String(format: "%d:%02d", minutes, seconds)
     }
 }
+
+// MARK: - Activity Content View (handles activityFamily)
+
+struct ActivityContentView: View {
+    @Environment(\.activityFamily) var activityFamily
+    let context: ActivityViewContext<TwenyAttributes>
+    
+    var body: some View {
+        switch activityFamily {
+        case .small:
+            // Apple Watch Smart Stack
+            SmallActivityView(context: context)
+        case .medium:
+            // iOS Lock Screen
+            LiveActivityView(context: context)
+        @unknown default:
+            LiveActivityView(context: context)
+        }
+    }
+}
+
+// MARK: - Small Activity View (Apple Watch Smart Stack)
+
+struct SmallActivityView: View {
+    @Environment(\.isLuminanceReduced) var isLuminanceReduced
+    let context: ActivityViewContext<TwenyAttributes>
+    
+    var presetColor: Color {
+        Color(hex: context.attributes.presetColorHex)
+    }
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Progress ring with icon
+            ZStack {
+                Circle()
+                    .stroke(presetColor.opacity(isLuminanceReduced ? 0.2 : 0.3), lineWidth: 4)
+                
+                Circle()
+                    .trim(from: 0, to: context.state.progress)
+                    .stroke(
+                        isLuminanceReduced ? presetColor.opacity(0.6) : presetColor,
+                        style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+                
+                Text(context.attributes.sessionName.prefix(1))
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(isLuminanceReduced ? .secondary : .primary)
+            }
+            .frame(width: 44, height: 44)
+            
+            // Timer and status
+            VStack(alignment: .leading, spacing: 2) {
+                if let targetTime = context.state.targetTime {
+                    Text(timerInterval: Date()...targetTime, countsDown: true)
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(isLuminanceReduced ? .secondary : .primary)
+                }
+                
+                Text(context.state.phase == "Focus" ? "Focus" : "Break")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+    }
+}
+
+// MARK: - iOS Lock Screen Live Activity View
 
 struct LiveActivityView: View {
     let context: ActivityViewContext<TwenyAttributes>

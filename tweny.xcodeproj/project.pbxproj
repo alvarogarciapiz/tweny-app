@@ -10,6 +10,7 @@
 		384C13B42EDB505400C1D899 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384C13B32EDB505400C1D899 /* WidgetKit.framework */; };
 		384C13B62EDB505400C1D899 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384C13B52EDB505400C1D899 /* SwiftUI.framework */; };
 		384C13C72EDB505500C1D899 /* TwenyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		38C2B2A22EE49E0A003370EA /* twenywatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 38C2B2982EE49E09003370EA /* twenywatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -19,6 +20,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 384C13B02EDB505400C1D899;
 			remoteInfo = TwenyWidgetExtension;
+		};
+		38C2B2A02EE49E0A003370EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 384C136D2EDB495400C1D899 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 38C2B2972EE49E09003370EA;
+			remoteInfo = "twenywatch Watch App";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -34,6 +42,17 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		38C2B2A62EE49E0A003370EA /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				38C2B2A22EE49E0A003370EA /* twenywatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +60,7 @@
 		384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TwenyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		384C13B32EDB505400C1D899 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		384C13B52EDB505400C1D899 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		38C2B2982EE49E09003370EA /* twenywatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "twenywatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -77,6 +97,11 @@
 			path = TwenyWidget;
 			sourceTree = "<group>";
 		};
+		38C2B2992EE49E09003370EA /* twenywatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "twenywatch Watch App";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +121,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		38C2B2952EE49E09003370EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +136,7 @@
 			children = (
 				384C13772EDB495400C1D899 /* tweny */,
 				384C13B72EDB505400C1D899 /* TwenyWidget */,
+				38C2B2992EE49E09003370EA /* twenywatch Watch App */,
 				384C13B22EDB505400C1D899 /* Frameworks */,
 				384C13762EDB495400C1D899 /* Products */,
 			);
@@ -114,6 +147,7 @@
 			children = (
 				384C13752EDB495400C1D899 /* tweny.app */,
 				384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */,
+				38C2B2982EE49E09003370EA /* twenywatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,11 +172,13 @@
 				384C13722EDB495400C1D899 /* Frameworks */,
 				384C13732EDB495400C1D899 /* Resources */,
 				384C13CC2EDB505500C1D899 /* Embed Foundation Extensions */,
+				38C2B2A62EE49E0A003370EA /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				384C13C62EDB505500C1D899 /* PBXTargetDependency */,
+				38C2B2A12EE49E0A003370EA /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				384C13772EDB495400C1D899 /* tweny */,
@@ -176,6 +212,28 @@
 			productReference = 384C13B12EDB505400C1D899 /* TwenyWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		38C2B2972EE49E09003370EA /* twenywatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 38C2B2A32EE49E0A003370EA /* Build configuration list for PBXNativeTarget "twenywatch Watch App" */;
+			buildPhases = (
+				38C2B2942EE49E09003370EA /* Sources */,
+				38C2B2952EE49E09003370EA /* Frameworks */,
+				38C2B2962EE49E09003370EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				38C2B2992EE49E09003370EA /* twenywatch Watch App */,
+			);
+			name = "twenywatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "twenywatch Watch App";
+			productReference = 38C2B2982EE49E09003370EA /* twenywatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -190,6 +248,9 @@
 						CreatedOnToolsVersion = 26.1.1;
 					};
 					384C13B02EDB505400C1D899 = {
+						CreatedOnToolsVersion = 26.1.1;
+					};
+					38C2B2972EE49E09003370EA = {
 						CreatedOnToolsVersion = 26.1.1;
 					};
 				};
@@ -210,6 +271,7 @@
 			targets = (
 				384C13742EDB495400C1D899 /* tweny */,
 				384C13B02EDB505400C1D899 /* TwenyWidgetExtension */,
+				38C2B2972EE49E09003370EA /* twenywatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +285,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		384C13AF2EDB505400C1D899 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38C2B2962EE49E09003370EA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -246,6 +315,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		38C2B2942EE49E09003370EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -253,6 +329,11 @@
 			isa = PBXTargetDependency;
 			target = 384C13B02EDB505400C1D899 /* TwenyWidgetExtension */;
 			targetProxy = 384C13C52EDB505500C1D899 /* PBXContainerItemProxy */;
+		};
+		38C2B2A12EE49E0A003370EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 38C2B2972EE49E09003370EA /* twenywatch Watch App */;
+			targetProxy = 38C2B2A02EE49E0A003370EA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -397,24 +478,25 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.1;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
 		};
@@ -442,24 +524,25 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.1;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.1;
+				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
 		};
@@ -528,6 +611,73 @@
 			};
 			name = Release;
 		};
+		38C2B2A42EE49E0A003370EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XYNDU2W8XF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = twenywatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lvrpiz.tweny;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		38C2B2A52EE49E0A003370EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XYNDU2W8XF;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = twenywatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lvrpiz.tweny;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lvrpiz.tweny.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -554,6 +704,15 @@
 			buildConfigurations = (
 				384C13CA2EDB505500C1D899 /* Debug */,
 				384C13CB2EDB505500C1D899 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		38C2B2A32EE49E0A003370EA /* Build configuration list for PBXNativeTarget "twenywatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				38C2B2A42EE49E0A003370EA /* Debug */,
+				38C2B2A52EE49E0A003370EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

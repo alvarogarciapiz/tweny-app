@@ -286,6 +286,9 @@ class TimerManager: ObservableObject {
         Task {
             await currentActivity?.update(ActivityContent(state: updatedState, staleDate: nil))
         }
+        
+        // Sync state to Apple Watch
+        WatchConnectivityManager.shared.sendTimerStateToWatch()
     }
     
     private func endLiveActivity() {
