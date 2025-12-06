@@ -24,6 +24,7 @@ class TimerManager: ObservableObject {
     @Published var sessionElapsed: TimeInterval = 0
     @Published var currentPresetIcon: String = "⏳"
     @Published var currentPresetName: String = "Focus Session"
+    @Published var currentPresetColorHex: String = "#007AFF" // Default blue
     
     private var timer: AnyCancellable?
     private var configuration = TimerConfiguration()
@@ -31,7 +32,7 @@ class TimerManager: ObservableObject {
     private var sessionTargetDate: Date?
     
     // Debug Mode
-    static let isDebugMode = true // Set to true to speed up time for testing
+    static let isDebugMode = false // Set to true to speed up time for testing
     
     // Live Activity
     private var currentActivity: Activity<TwenyAttributes>?
@@ -70,9 +71,11 @@ class TimerManager: ObservableObject {
             configuration.breakDuration = preset.breakInterval
             currentPresetIcon = preset.icon
             currentPresetName = preset.name
+            currentPresetColorHex = preset.colorHex
         } else {
             currentPresetIcon = "⏳"
             currentPresetName = "Quick Session"
+            currentPresetColorHex = "#007AFF"
         }
         
         phase = .work
@@ -231,9 +234,10 @@ class TimerManager: ObservableObject {
     
     private func startLiveActivity() {
         let attributes = TwenyAttributes(
-            sessionName: "Eye Care Session",
+            sessionName: currentPresetName,
             intervalDuration: totalDuration,
-            sessionGoal: sessionGoal
+            sessionGoal: sessionGoal,
+            presetColorHex: currentPresetColorHex
         )
         
         let sessionEnd = sessionStartTime?.addingTimeInterval(sessionGoal)

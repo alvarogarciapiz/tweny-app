@@ -16,151 +16,230 @@ struct TwenyWidgetLiveActivity: Widget {
             LiveActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI
+                // Expanded UI - Apple Flight style
                 DynamicIslandExpandedRegion(.leading) {
-                    HStack {
-                        Image(systemName: context.state.phase == "Focus" ? "brain.head.profile" : "cup.and.saucer.fill")
-                            .foregroundColor(context.state.phase == "Focus" ? .indigo : .orange)
-                        Text(context.state.phase)
-                            .font(.system(.headline, design: .rounded))
+                    HStack(spacing: 6) {
+                        Image(systemName: "eye")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(.primary)
+                        
+                        Text(context.attributes.sessionName)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(.primary)
+                            .lineLimit(1)
                     }
-                    .padding(.leading)
                 }
                 
                 DynamicIslandExpandedRegion(.trailing) {
-                    if let targetTime = context.state.targetTime {
-                        Text(timerInterval: Date()...targetTime, countsDown: true)
-                            .monospacedDigit()
-                            .font(.system(.title2, design: .rounded, weight: .semibold))
-                            .padding(.trailing)
-                    } else {
-                        Text(timeString(from: context.state.timeRemaining))
-                            .monospacedDigit()
-                            .font(.system(.title2, design: .rounded, weight: .semibold))
-                            .padding(.trailing)
-                            .foregroundColor(.secondary)
+                    Text(context.state.phase.uppercased())
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(context.state.phase == "Focus" ? .white : .black)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .background(context.state.phase == "Focus" ? Color.primary : Color.green)
+                        .clipShape(Capsule())
+                }
+                
+                DynamicIslandExpandedRegion(.center) {
+                    VStack(spacing: 6) {
+                        // Progress bar with markers
+                        GeometryReader { geo in
+                            ZStack(alignment: .leading) {
+                                // Background track
+                                Capsule()
+                                    .fill(Color.primary.opacity(0.2))
+                                    .frame(height: 4)
+                                
+                                // Progress fill
+                                Capsule()
+                                    .fill(Color.primary)
+                                    .frame(width: max(4, geo.size.width * context.state.progress), height: 4)
+                                
+                                // Start marker
+                                Circle()
+                                    .fill(Color.primary)
+                                    .frame(width: 8, height: 8)
+                                    .offset(x: -2)
+                                
+                                // End marker
+                                Circle()
+                                    .stroke(Color.primary.opacity(0.3), lineWidth: 2)
+                                    .frame(width: 8, height: 8)
+                                    .offset(x: geo.size.width - 6)
+                            }
+                            .frame(height: 8)
+                        }
+                        .frame(height: 8)
+                        
+                        // Time labels
+                        HStack {
+                            Text("0:00")
+                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                            
+                            Spacer()
+                            
+                            // Center: current time big
+                            if let targetTime = context.state.targetTime {
+                                Text(timerInterval: Date()...targetTime, countsDown: true)
+                                    .monospacedDigit()
+                                    .font(.system(size: 15, weight: .bold, design: .rounded))
+                                    .foregroundStyle(.primary)
+                            }
+                            
+                            Spacer()
+                            
+                            Text(formatTime(context.attributes.intervalDuration))
+                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                        }
                     }
+                    .padding(.top, 4)
                 }
                 
                 DynamicIslandExpandedRegion(.bottom) {
-                    // Progress Bar
-                    VStack(spacing: 8) {
-                        ProgressView(value: context.state.progress, total: 1.0)
-                            .tint(context.state.phase == "Focus" ? .indigo : .orange)
-                            .scaleEffect(x: 1, y: 2, anchor: .center)
-                            .clipShape(Capsule())
-                        
-                        HStack {
-                            Text(context.state.statusMessage)
-                                .font(.system(.caption, design: .rounded))
-                                .foregroundColor(.secondary)
-                            Spacer()
-                            Text("\(Int((context.state.sessionElapsed / context.attributes.sessionGoal) * 100))% Session")
-                                .font(.system(.caption, design: .rounded))
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 8)
+                    Text(context.state.statusMessage)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 2)
                 }
                 
             } compactLeading: {
-                Image(systemName: context.state.phase == "Focus" ? "brain.head.profile" : "cup.and.saucer.fill")
-                    .foregroundColor(context.state.phase == "Focus" ? .indigo : .orange)
+                ZStack {
+                    Circle()
+                        .trim(from: 0, to: context.state.progress)
+                        .stroke(phaseColor(context.state.phase), style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                        .frame(width: 22, height: 22)
+                    
+                    Image(systemName: context.state.phase == "Focus" ? "eye" : "eye.slash")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(phaseColor(context.state.phase))
+                }
             } compactTrailing: {
                 if let targetTime = context.state.targetTime {
                     Text(timerInterval: Date()...targetTime, countsDown: true)
                         .monospacedDigit()
-                        .font(.system(.body, design: .rounded))
-                        .frame(width: 44)
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .frame(minWidth: 44)
                 } else {
                     Text(timeString(from: context.state.timeRemaining))
                         .monospacedDigit()
-                        .font(.system(.body, design: .rounded))
-                        .frame(width: 44)
-                        .foregroundColor(.secondary)
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .frame(minWidth: 44)
+                        .foregroundStyle(.secondary)
                 }
             } minimal: {
-                Image(systemName: context.state.phase == "Focus" ? "brain.head.profile" : "cup.and.saucer.fill")
-                    .foregroundColor(context.state.phase == "Focus" ? .indigo : .orange)
+                ZStack {
+                    Circle()
+                        .trim(from: 0, to: context.state.progress)
+                        .stroke(phaseColor(context.state.phase), style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                    
+                    Image(systemName: context.state.phase == "Focus" ? "eye" : "eye.slash")
+                        .font(.system(size: 8, weight: .bold))
+                        .foregroundStyle(phaseColor(context.state.phase))
+                }
             }
             .widgetURL(URL(string: "tweny://open"))
-            .keylineTint(Color.cyan)
         }
+    }
+    
+    func phaseColor(_ phase: String) -> Color {
+        phase == "Focus" ? .primary : .green
+    }
+    
+    func formatTime(_ interval: TimeInterval) -> String {
+        let minutes = Int(interval) / 60
+        let seconds = Int(interval) % 60
+        return String(format: "%d:%02d", minutes, seconds)
     }
 }
 
 struct LiveActivityView: View {
     let context: ActivityViewContext<TwenyAttributes>
     
-    var sessionProgress: Double {
-        guard context.attributes.sessionGoal > 0 else { return 0 }
-        return context.state.sessionElapsed / context.attributes.sessionGoal
+    var presetColor: Color {
+        Color(hex: context.attributes.presetColorHex)
     }
     
     var body: some View {
         VStack(spacing: 12) {
-            // Top Row: Header
-            HStack {
-                Label(context.state.phase, systemImage: context.state.phase == "Focus" ? "brain.head.profile" : "cup.and.saucer.fill")
-                    .font(.system(.subheadline, design: .rounded).weight(.medium))
-                    .foregroundColor(context.state.phase == "Focus" ? .indigo : .orange)
+            // Top row: Phase pill + Timer on left, Controls on right
+            HStack(alignment: .center) {
+                // Left: Phase pill and Timer
+                VStack(alignment: .leading, spacing: 4) {
+                    // Phase pill
+                    HStack(spacing: 4) {
+                        Image(systemName: context.state.phase == "Focus" ? "eye" : "eye.slash")
+                            .font(.system(size: 10, weight: .semibold))
+                        
+                        Text(context.state.phase.uppercased())
+                            .font(.system(size: 10, weight: .semibold))
+                            .tracking(0.3)
+                    }
+                    .foregroundStyle(presetColor)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(presetColor.opacity(0.12))
+                    .clipShape(Capsule())
+                    
+                    // Timer
+                    if let targetTime = context.state.targetTime {
+                        Text(timerInterval: Date()...targetTime, countsDown: true)
+                            .font(.system(size: 42, weight: .medium, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.primary)
+                    } else {
+                        Text(timeString(from: context.state.timeRemaining))
+                            .font(.system(size: 42, weight: .medium, design: .rounded))
+                            .monospacedDigit()
+                            .foregroundStyle(.secondary)
+                    }
+                }
                 
                 Spacer()
                 
-                Text(context.state.statusMessage)
-                    .font(.system(.caption, design: .rounded))
-                    .foregroundColor(.secondary)
-            }
-            
-            // Middle: Big Timer & Controls
-            HStack {
-                if let targetTime = context.state.targetTime {
-                    Text(timerInterval: Date()...targetTime, countsDown: true)
-                        .font(.system(size: 52, weight: .medium, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundColor(.primary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                } else {
-                    Text(timeString(from: context.state.timeRemaining))
-                        .font(.system(size: 52, weight: .medium, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                
-                // Controls
-                HStack(spacing: 20) {
+                // Right: Controls (top right corner)
+                HStack(spacing: 10) {
                     Link(destination: URL(string: "tweny://toggle")!) {
-                        Image(systemName: context.state.phase == "Paused" ? "play.circle.fill" : "pause.circle.fill")
-                            .font(.system(size: 44))
-                            .foregroundColor(.primary)
+                        Image(systemName: context.state.phase == "Paused" ? "play.fill" : "pause.fill")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(.primary)
+                            .frame(width: 36, height: 36)
+                            .background(Color.primary.opacity(0.1))
+                            .clipShape(Circle())
                     }
                     
                     Link(destination: URL(string: "tweny://stop")!) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 44))
-                            .foregroundColor(.secondary)
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(.tertiary)
+                            .frame(width: 36, height: 36)
+                            .background(Color.primary.opacity(0.06))
+                            .clipShape(Circle())
                     }
                 }
             }
             
-            // Bottom: Progress Bar
-            VStack(spacing: 6) {
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(Color.secondary.opacity(0.2))
-                        
-                        Capsule()
-                            .fill(context.state.phase == "Focus" ? Color.indigo : Color.orange)
-                            .frame(width: max(0, geo.size.width * context.state.progress))
-                    }
+            // Bottom: Full-width progress bar with preset color
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    // Background track
+                    Capsule()
+                        .fill(presetColor.opacity(0.2))
+                    
+                    // Progress fill
+                    Capsule()
+                        .fill(presetColor)
+                        .frame(width: max(6, geo.size.width * context.state.progress))
                 }
-                .frame(height: 12)
             }
+            .frame(height: 8)
         }
-        .padding(20)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 14)
         .activityBackgroundTint(Color(UIColor.systemBackground))
     }
     
@@ -176,4 +255,31 @@ func timeString(from timeInterval: TimeInterval) -> String {
     let minutes = Int(timeInterval) / 60
     let seconds = Int(timeInterval) % 60
     return String(format: "%02d:%02d", minutes, seconds)
+}
+
+// Color+Hex extension for Widget
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3:
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6:
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8:
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (255, 0, 122, 255) // Default blue
+        }
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue: Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
 }

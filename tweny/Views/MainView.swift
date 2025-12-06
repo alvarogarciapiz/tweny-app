@@ -24,7 +24,7 @@ struct MainView: View {
                 
                 ProfileView()
                     .tabItem {
-                        Label("Profile", systemImage: "person.crop.circle")
+                        Label("Insights", systemImage: "chart.bar.fill")
                     }
                 
                 HistoryView()
@@ -37,9 +37,9 @@ struct MainView: View {
             // Custom Accessory View (Simulating tabViewBottomAccessory)
             if !showingTimerView {
                 SessionAccessoryView(timerManager: timerManager, namespace: animation)
-                    .padding(.bottom, 60) // Approximate TabBar height + padding
+                    .padding(.bottom, 60)
                     .onTapGesture {
-                        withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
+                        withAnimation(.spring(response: 0.5, dampingFraction: 0.88)) {
                             showingTimerView = true
                         }
                     }
@@ -47,7 +47,7 @@ struct MainView: View {
                         DragGesture()
                             .onEnded { gesture in
                                 if gesture.translation.height < -50 {
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.75)) {
+                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.88)) {
                                         showingTimerView = true
                                     }
                                 }
@@ -58,6 +58,10 @@ struct MainView: View {
             if showingTimerView {
                 TimerView(viewModel: HomeViewModel(timerManager: timerManager), isPresented: $showingTimerView, namespace: animation)
                     .zIndex(1)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .bottom).combined(with: .opacity),
+                        removal: .move(edge: .bottom).combined(with: .opacity)
+                    ))
                     .ignoresSafeArea()
             }
         }

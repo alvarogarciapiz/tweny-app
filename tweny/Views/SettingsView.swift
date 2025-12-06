@@ -44,9 +44,9 @@ struct SettingsView: View {
                         CustomStepper(value: $breakDuration, range: 10...60, step: 5, unit: "sec")
                     }
                 } header: {
-                    Text("Quick Session Defaults")
+                    Text("Quick Session")
                 } footer: {
-                    Text("These settings apply when you start a 'Quick Session' without selecting a specific preset.")
+                    Text("Tap 'Start Quick Session' on Home to use these defaults. Custom presets override these values.")
                 }
                 
                 // MARK: - Sensory & Feedback
@@ -117,11 +117,24 @@ struct SettingsView: View {
                 Text("Are you sure? This will delete all your session history, badges, and streaks. This action cannot be undone.")
             }
             .onAppear {
-                // Sync with TimerManager if needed
+                // Sync with TimerManager
                 TimerManager.shared.sessionGoal = dailyGoalHours * 3600
+                TimerManager.shared.updateConfiguration(workMinutes: workDuration, breakSeconds: breakDuration)
+                
+                // Apply screen on setting
+                UIApplication.shared.isIdleTimerDisabled = keepScreenOn
             }
             .onChange(of: dailyGoalHours) { _, newValue in
                 TimerManager.shared.sessionGoal = newValue * 3600
+            }
+            .onChange(of: workDuration) { _, newValue in
+                TimerManager.shared.updateConfiguration(workMinutes: newValue, breakSeconds: breakDuration)
+            }
+            .onChange(of: breakDuration) { _, newValue in
+                TimerManager.shared.updateConfiguration(workMinutes: workDuration, breakSeconds: newValue)
+            }
+            .onChange(of: keepScreenOn) { _, newValue in
+                UIApplication.shared.isIdleTimerDisabled = newValue
             }
         }
     }

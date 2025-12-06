@@ -25,4 +25,5 @@ struct TwenyAttributes: ActivityAttributes {
     var sessionName: String
     var intervalDuration: TimeInterval
     var sessionGoal: TimeInterval
+    var presetColorHex: String // Color of the preset card
 }

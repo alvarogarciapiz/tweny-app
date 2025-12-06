@@ -6,119 +6,149 @@
 //
 
 import SwiftUI
-import Charts
 
 struct SessionDetailView: View {
     let session: SessionLog
+    @Environment(\.dismiss) var dismiss
+    
+    private var focusTime: Double {
+        session.duration - (Double(session.breaksTaken) * 20.0)
+    }
+    
+    private var breakTime: Double {
+        Double(session.breaksTaken) * 20.0
+    }
+    
+    private var focusRatio: Double {
+        guard session.duration > 0 else { return 0 }
+        return focusTime / session.duration * 100
+    }
+    
+    private var averageWorkBlock: Double {
+        guard session.breaksTaken > 0 else { return session.duration / 60 }
+        return focusTime / Double(session.breaksTaken + 1) / 60
+    }
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 32) {
-                // 1. Hero Section (Ring + Time)
-                VStack(spacing: 24) {
+            VStack(spacing: 28) {
+                // 1. Hero: Duration + Ring
+                VStack(spacing: 16) {
                     ZStack {
                         Circle()
-                            .stroke(Color.secondary.opacity(0.12), lineWidth: 20)
-                            .frame(width: 220, height: 220)
+                            .stroke(Color(UIColor.tertiarySystemFill), lineWidth: 16)
+                            .frame(width: 180, height: 180)
+                        
                         Circle()
-                            .trim(from: 0, to: 1)
-                            .stroke(
-                                Color.primary.opacity(0.12),
-                                style: StrokeStyle(lineWidth: 20, lineCap: .round)
-                            )
-                            .frame(width: 220, height: 220)
+                            .trim(from: 0, to: focusRatio / 100)
+                            .stroke(Color.primary, style: StrokeStyle(lineWidth: 16, lineCap: .round))
+                            .frame(width: 180, height: 180)
                             .rotationEffect(.degrees(-90))
-                            .shadow(color: Color.primary.opacity(0.08), radius: 8, x: 0, y: 0)
-                            .animation(.easeOut(duration: 0.8), value: session.duration)
+                        
                         VStack(spacing: 4) {
-                            Text("Total Focus")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.secondary)
-                                .textCase(.uppercase)
                             Text(TimeFormatter.formatDuration(timeInterval: session.duration))
-                                .font(.system(size: 42, weight: .bold, design: .rounded))
+                                .font(.system(size: 36, weight: .bold, design: .rounded))
                                 .monospacedDigit()
-                                .foregroundColor(.primary)
-                                .transition(.opacity.combined(with: .scale))
+                            
+                            Text("Total Time")
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundStyle(.secondary)
                         }
                     }
-                    .padding(.top, 20)
+                    .padding(.top, 16)
                 }
                 
-                // 2. Stats Grid (Bento Style)
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("Session Stats")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .padding(.horizontal)
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                        DetailStatCard(
-                            title: "Start Time",
-                            value: session.startTime?.formatted(date: .omitted, time: .shortened) ?? "--:--",
-                            icon: "play.fill",
-                            color: .green
-                        )
-                        DetailStatCard(
-                            title: "End Time",
-                            value: session.endTime?.formatted(date: .omitted, time: .shortened) ?? "--:--",
-                            icon: "stop.fill",
-                            color: .red
-                        )
-                        DetailStatCard(
-                            title: "Breaks",
-                            value: "\(session.breaksTaken)",
-                            icon: "cup.and.saucer.fill",
-                            color: .orange
-                        )
-                        DetailStatCard(
-                            title: "Focus Ratio",
-                            value: calculateFocusRatio() + "%",
-                            icon: "chart.pie.fill",
-                            color: .primary
-                        )
-                    }
-                    .padding(.horizontal)
-                    .animation(.spring(response: 0.5, dampingFraction: 0.8), value: session.breaksTaken)
+                // 2. Quick Stats Row
+                HStack(spacing: 12) {
+                    QuickStatPill(
+                        icon: "clock",
+                        value: session.startTime?.formatted(date: .omitted, time: .shortened) ?? "--",
+                        label: "Start"
+                    )
+                    
+                    QuickStatPill(
+                        icon: "clock.badge.checkmark",
+                        value: session.endTime?.formatted(date: .omitted, time: .shortened) ?? "--",
+                        label: "End"
+                    )
+                    
+                    QuickStatPill(
+                        icon: "eye",
+                        value: "\(session.breaksTaken)",
+                        label: "Breaks"
+                    )
                 }
+                .padding(.horizontal, 24)
                 
-                // 3. Chart Section
+                // 3. Session Breakdown
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Time Distribution")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .padding(.horizontal)
-                    VStack(alignment: .leading, spacing: 24) {
-                        Chart {
-                            BarMark(
-                                x: .value("Type", "Focus"),
-                                y: .value("Duration", session.duration - (Double(session.breaksTaken) * 20.0))
-                            )
-                            .foregroundStyle(Color.primary.opacity(0.15))
-                            .cornerRadius(8)
-                            .annotation(position: .top) {
-                                Text("Focus")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            BarMark(
-                                x: .value("Type", "Breaks"),
-                                y: .value("Duration", Double(session.breaksTaken) * 20.0)
-                            )
-                            .foregroundStyle(Color.secondary.opacity(0.15))
-                            .cornerRadius(8)
-                            .annotation(position: .top) {
-                                Text("Breaks")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                        .chartYAxis(.hidden)
-                        .frame(height: 200)
+                    Text("Breakdown")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                    
+                    VStack(spacing: 12) {
+                        BreakdownRow(
+                            icon: "brain.head.profile",
+                            title: "Focus Time",
+                            value: TimeFormatter.formatDuration(timeInterval: focusTime),
+                            color: Color(hex: "#30D158")
+                        )
+                        
+                        BreakdownRow(
+                            icon: "eye.slash",
+                            title: "Break Time",
+                            value: String(format: "%.0fs", breakTime),
+                            color: Color(hex: "#FF9F0A")
+                        )
+                        
+                        BreakdownRow(
+                            icon: "timer",
+                            title: "Avg. Work Block",
+                            value: String(format: "%.0f min", averageWorkBlock),
+                            color: Color(hex: "#5856D6")
+                        )
+                        
+                        BreakdownRow(
+                            icon: "percent",
+                            title: "Efficiency",
+                            value: String(format: "%.0f%%", focusRatio),
+                            color: Color(hex: "#32ADE6")
+                        )
                     }
-                    .padding(24)
-                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                    .cornerRadius(24)
-                    .padding(.horizontal)
-                    .shadow(color: Color.black.opacity(0.03), radius: 10, x: 0, y: 5)
                 }
+                .padding(20)
+                .background(Color(UIColor.secondarySystemGroupedBackground))
+                .clipShape(.rect(cornerRadius: 20))
+                .padding(.horizontal, 24)
+                
+                // 4. Session Quality
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Session Quality")
+                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                    
+                    HStack(spacing: 12) {
+                        QualityBadge(
+                            condition: session.duration >= 3600,
+                            icon: "star.fill",
+                            text: "1h+ Focus"
+                        )
+                        
+                        QualityBadge(
+                            condition: session.breaksTaken >= 3,
+                            icon: "eye.fill",
+                            text: "Eye Care"
+                        )
+                        
+                        QualityBadge(
+                            condition: focusRatio >= 95,
+                            icon: "bolt.fill",
+                            text: "High Focus"
+                        )
+                    }
+                }
+                .padding(20)
+                .background(Color(UIColor.secondarySystemGroupedBackground))
+                .clipShape(.rect(cornerRadius: 20))
+                .padding(.horizontal, 24)
                 
                 Spacer(minLength: 40)
             }
@@ -128,49 +158,81 @@ struct SessionDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .background(Color(UIColor.systemGroupedBackground))
     }
+}
+
+// MARK: - Helper Views
+
+struct QuickStatPill: View {
+    let icon: String
+    let value: String
+    let label: String
     
-    private func calculateFocusRatio() -> String {
-        let totalTime = session.duration
-        let breakTime = Double(session.breaksTaken) * 20.0 // Assuming 20s breaks
-        if totalTime == 0 { return "0" }
-        let ratio = ((totalTime - breakTime) / totalTime) * 100
-        return String(format: "%.0f", ratio)
+    var body: some View {
+        VStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.secondary)
+            
+            Text(value)
+                .font(.system(size: 15, weight: .bold, design: .rounded))
+            
+            Text(label)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 14)
+        .background(Color(UIColor.secondarySystemGroupedBackground))
+        .clipShape(.rect(cornerRadius: 14))
     }
 }
 
-struct DetailStatCard: View {
+struct BreakdownRow: View {
+    let icon: String
     let title: String
     let value: String
-    let icon: String
     let color: Color
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(color)
-                    .padding(8)
-                    .background(color.opacity(0.1))
-                    .clipShape(Circle())
-                Spacer()
-            }
+        HStack(spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(color)
+                .frame(width: 32, height: 32)
+                .background(color.opacity(0.12))
+                .clipShape(.rect(cornerRadius: 8))
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text(value)
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                
-                Text(title)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(.secondary)
-            }
+            Text(title)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(.primary)
+            
+            Spacer()
+            
+            Text(value)
+                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .foregroundStyle(.primary)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(UIColor.secondarySystemGroupedBackground))
-        .cornerRadius(20)
-        .shadow(color: Color.black.opacity(0.03), radius: 5, x: 0, y: 2)
     }
 }
 
+struct QualityBadge: View {
+    let condition: Bool
+    let icon: String
+    let text: String
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(condition ? Color(hex: "#FFD60A") : Color.secondary.opacity(0.4))
+            
+            Text(text)
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(condition ? Color.primary : Color.secondary.opacity(0.5))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .background(condition ? Color(hex: "#FFD60A").opacity(0.1) : Color(UIColor.tertiarySystemFill))
+        .clipShape(.rect(cornerRadius: 12))
+    }
+}

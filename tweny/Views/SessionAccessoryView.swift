@@ -13,13 +13,30 @@ struct SessionAccessoryView: View {
     
     var body: some View {
         if timerManager.phase != .idle {
-            HStack(spacing: 8) {
-                // Icon
-                Text(timerManager.currentPresetIcon)
-                    .font(.system(size: 18))
-                    .frame(width: 30, height: 30)
-                    .background(Color.secondary.opacity(0.1))
-                    .clipShape(Circle())
+            HStack(spacing: 10) {
+                // Icon with circular progress
+                ZStack {
+                    // Background ring
+                    Circle()
+                        .stroke(Color.secondary.opacity(0.15), lineWidth: 3)
+                        .frame(width: 36, height: 36)
+                    
+                    // Progress ring
+                    Circle()
+                        .trim(from: 0, to: timerManager.progress)
+                        .stroke(
+                            timerManager.phase == .breakTime ? Color.green : Color.primary,
+                            style: StrokeStyle(lineWidth: 3, lineCap: .round)
+                        )
+                        .frame(width: 36, height: 36)
+                        .rotationEffect(.degrees(-90))
+                        .animation(.linear(duration: 0.3), value: timerManager.progress)
+                    
+                    // Emoji
+                    Text(timerManager.currentPresetIcon)
+                        .font(.system(size: 16))
+                }
+                .matchedGeometryEffect(id: "iconRing", in: namespace)
                 
                 // Info
                 VStack(alignment: .leading, spacing: 0) {
@@ -89,10 +106,10 @@ struct SessionAccessoryView: View {
                             .matchedGeometryEffect(id: "border", in: namespace)
                     )
             )
-            .padding(.horizontal, 60) // More compressed width
+            .padding(.horizontal, 60)
             .transition(.asymmetric(
-                insertion: .move(edge: .bottom).combined(with: .opacity),
-                removal: .opacity
+                insertion: .scale(scale: 0.85, anchor: .bottom).combined(with: .opacity).combined(with: .move(edge: .bottom)),
+                removal: .scale(scale: 0.8, anchor: .center).combined(with: .opacity)
             ))
         }
     }
